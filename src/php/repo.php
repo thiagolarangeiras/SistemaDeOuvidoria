@@ -13,25 +13,3 @@ function connectToDatabase(): PDO{
         throw new Exception("erro de database". $e->getMessage());
     }
 }
-
-// Usuarios
-
-
-
-
-// Logs
-function selectLog(){
-    $db = connectToDatabase();
-    $db->beginTransaction();
-
-    $db->rollBack();
-    $db->commit();
-}
-
-function inserirLog(){
-    $db = connectToDatabase();
-    $db->beginTransaction();
-
-    $db->rollBack();
-    $db->commit();
-}
