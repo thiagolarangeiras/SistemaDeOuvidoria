@@ -18,18 +18,44 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
         crossorigin="anonymous">    
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script>
         $(document).ready(function() {
+            $('#Telefone').mask('(00) 00000-0000');
+            $('#Whatsapp').mask('(00) 00000-0000');
             $("#login").on("click", function() {
-                window.location = "./index.html";
+                window.location = "./views/index.html";
             });
-            $('#loginForm').on('submit', function(event) {        
+            $('#loginForm').on('submit', function(event) { 
+                event.preventDefault();
+                let usuario = $("#Usuario").val();
+                console.log(usuario);
+                let senha = $("#Senha").val();
+                let nome = $("#Nome").val();
+                let nascimento = $("#Nascimento").val();
+                let email = $("#Email").val();
+                let telefone = $("#Telefone").val();
+                let whatsapp = $("#Whatsapp").val();
+                let cidade = $("#Cidade").val();
+                let estado = $("#Estado").val();
+
                 $.ajax({
                     url: "http://localhost:8000/signin",
                     type: 'POST',
                     contentType: 'application/json',
-                    dataType: "json",
+                    data: JSON.stringify({
+                        usuario: usuario,
+                        senha: senha,
+                        nome: nome,
+                        nascimento: nascimento,
+                        email: email,
+                        telefone: telefone,
+                        whatsapp: whatsapp,
+                        cidade: cidade,
+                        estado: estado
+                    }),
                     success: function(response) {
+                        alert("awd");
                         window.location = "./ouvidoria.html";
                     },
                     error: function(xhr, status, error) {
@@ -52,12 +78,40 @@
                     <div class="card-body">
                         <form id="loginForm">
                             <div class="form-group mb-3">
-                                <label for="email">Email:</label>
-                                <input type="text" class="form-control" id="email" required>
+                                <label for="Usuario">Usuario:</label>
+                                <input type="text" class="form-control" id="Usuario" required>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="password">Senha:</label>
-                                <input type="password" class="form-control" id="password" required>
+                                <label for="Senha">Senha:</label>
+                                <input type="password" class="form-control" id="Senha" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="Nome">Nome:</label>
+                                <input type="text" class="form-control" id="Nome" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="Nascimento">Nascimento:</label>
+                                <input type="text" class="form-control" id="Nascimento" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="Email">Email:</label>
+                                <input type="text" class="form-control" id="Email" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="Telefone">Telefone:</label>
+                                <input type="text" class="form-control" id="Telefone" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="Whatsapp">Whatsapp:</label>
+                                <input type="text" class="form-control" id="Whatsapp" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="Cidade">Cidade:</label>
+                                <input type="text" class="form-control" id="Cidade" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="Estado">Estado:</label>
+                                <input type="text" class="form-control" id="Estado" required>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col">
