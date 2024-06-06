@@ -23,6 +23,7 @@ try {
     session_start();
 
     require_once("./models/models.php");
+    require_once("./models/ouvidoria.php");
     require_once("./repositories/repo.php");
     require_once("./controllers/authController.php");
     require_once("./controllers/userController.php");

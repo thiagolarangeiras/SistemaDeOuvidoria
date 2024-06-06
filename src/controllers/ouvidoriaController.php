@@ -1,11 +1,28 @@
 <?php
+function anexoRepoSelectAll(int $idOuvidoria): array{
+    $db = connectToDatabase();
+    $db->beginTransaction();
+
+    $prepare = $db->prepare(
+        "SELECT id_anexo, nome FROM anexos 
+        WHERE id_ouvidoria = :idOuvidoria"
+    );
+
+    $prepare->bindParam(':idOuvidoria', $idOuvidoria, PDO::PARAM_INT);
+    $prepare->execute();
+    $resultArray = $prepare->fetchAll(PDO::FETCH_ASSOC);
+    $db->commit();
+    return $resultArray;
+}
+
+
 function ouvidoriaRepoSelectAll(int $page = 0, int $count = 50): array{
     $db = connectToDatabase();
     $db->beginTransaction();
 
     $prepare = $db->prepare(
         "SELECT ou.*, us.nome AS usuario_nome FROM ouvidorias ou 
-        INNER JOIN usuarios us ON (ou.id_usuario = us.id_usuario) 
+        INNER JOIN usuarios us ON (ou.id_usuario = us.id_usuario)
         LIMIT :limit OFFSET :offset"
     );
 
@@ -67,13 +84,24 @@ function ouvidoriaGet(): Response{
 
     if($page == null && $count == null)
         $selectResults = ouvidoriaRepoSelectAll();
-    else
+    else 
         $selectResults = ouvidoriaRepoSelectAll($page, $count);
 
+    
     $ouvidorias = [];
     foreach($selectResults as $result) {
-        array_push($ouvidorias, Ouvidoria::mapToOuvidoriaRetornoAll($result));
+        array_push($ouvidorias, mapOuvidoriaResult($result));
     }
+
+    foreach ($ouvidorias as $ouvidoria) {
+        $anexos = anexoRepoSelectAll($ouvidoria->idOuvidoria);
+        $anexosMapeados = [];
+        foreach($anexos as $anexo){
+            array_push($anexosMapeados, mapOuvidoriaAnexoResult($anexo));
+        }
+        $ouvidoria->anexos = $anexosMapeados;
+    }
+    
     return new Response(200, $ouvidorias);
 }
 
