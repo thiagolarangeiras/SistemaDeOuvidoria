@@ -21,10 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 try {    
     session_start();
-
-    require_once("./models/models.php");
+    require_once("./models/anexo.php");
     require_once("./models/ouvidoria.php");
+    require_once("./models/response.php");
+    require_once("./models/user.php");
+
     require_once("./repositories/repo.php");
+    require_once("./repositories/anexoRepo.php");
+    require_once("./repositories/loginRepo.php");
+    require_once("./repositories/ouvidoriaRepo.php");
+    require_once("./repositories/userRepo.php");
+    
     require_once("./controllers/authController.php");
     require_once("./controllers/userController.php");
     require_once("./controllers/ouvidoriaController.php");

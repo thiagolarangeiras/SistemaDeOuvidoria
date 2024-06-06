@@ -1,36 +1,18 @@
 <?php
-function anexoRepoSelectArquivo(int $idAnexo): string{
-    $db = connectToDatabase();
-    $db->beginTransaction();
-    $prepare = $db->prepare("SELECT arquivo FROM anexos WHERE id_anexo = ?;");    
-    $prepare->execute([$idAnexo]);
-    $file = $prepare->fetch(PDO::FETCH_ASSOC);
-    $db->commit();
-    return $file["arquivo"];
-}
+function ouvidoriaAnexosController(): Response{
+    $methods = [
+        "GET" => "anexoGet",
+        "POST" => "anexoPost",
+        "DELETE" => "anexoDelete",
+    ];
+    
+    if (!isset($_SESSION['userId']))
+        return new Response(401,[ ]);    
 
-function anexoRepoInsert(int $idOuvidoria, string $name, string $anexo): int{
-    $db = connectToDatabase();
-    $db->beginTransaction();
-    $prepare = $db->prepare("INSERT INTO anexos VALUES (?, ?, ?, ?)");    
-    $prepare->execute([
-        0, // id_anexo
-        $idOuvidoria,
-        $name,
-        $anexo
-    ]);
-    $id = $db->lastInsertId();
-    $db->commit();
-    return $id;
-}
-
-
-function anexoRepoDelete(int $idAnexo): void{
-    $db = connectToDatabase();
-    $db->beginTransaction();
-    $prepare = $db->prepare("DELETE FROM anexos WHERE id_anexo = ?");    
-    $prepare->execute([$idAnexo]);
-    $db->commit();
+    if(isset($methods[$_SERVER["REQUEST_METHOD"]]))
+        return $methods[$_SERVER["REQUEST_METHOD"]]();
+    
+    return new Response(400,["error"=> "Metodo não permitido"]);
 }
 
 function anexoGet(): Response{
@@ -96,20 +78,4 @@ function anexoDelete(): Response{
     }
     anexoRepoDelete($idAnexo);
     return new Response(200, ["idAnexo" => $idAnexo]);
-}
-
-function ouvidoriaAnexosController(): Response{
-    $methods = [
-        "GET" => "anexoGet",
-        "POST" => "anexoPost",
-        "DELETE" => "anexoDelete",
-    ];
-    
-    if (!isset($_SESSION['userId']))
-        return new Response(401,[ ]);    
-
-    if(isset($methods[$_SERVER["REQUEST_METHOD"]]))
-        return $methods[$_SERVER["REQUEST_METHOD"]]();
-    
-    return new Response(400,["error"=> "Metodo não permitido"]);
 }
