@@ -20,10 +20,53 @@
     </script>
     <script>
         $(document).ready(function() {
+            console.log();
+            $.ajax({
+                url: "http://localhost:8000/ouvidoria?page=0&count=10",
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: "json",
+                success: function(response) {
+                    response.forEach(element => {
+                        addElement(element);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    
+                    console.error(xhr.responseText);
+                }
+            });
+            function addElement(data){
+                attachments = "";
+                data.anexos.forEach(element => {
+                    attachments += "\n" +
+                        `<div class="col row mb-3">` +
+                            `<a href="${window.location.origin}/ouvidoria/anexos?idAnexo=${element.idAnexo}" target="_blank">` +
+                                `<img src="../assets/file.svg" alt="Bootstrap" width="32" height="32">` +
+                                `<a>${element.nome}</a>` +
+                            `</a>`
+                        `</div>`;
+                });
+                element =
+                    `<div class="card-body">` +
+                    `<div class="card mt-2 mb-2 p-3">` +
+                        `<h5>${data.nomeUsuario}</h5>` +
+                        `<h5>${data.tipoServico}</h5>` +
+                        `<a>${data.descricao}</a>` +
+                        `<div class="card mt-3 p-2">` +
+                        `<h5 class="mt-2">Anexos:</h5>` +
+                        `<div class="row row-cols-auto mt-2">` +
+                            attachments +        
+                        `</div>` +
+                        `</div>` +
+                    `</div>` +
+                    `</div>`;
+                $('#list').append(element);
+            }
             $('#loginForm').on('submit', function(event) {
                 event.preventDefault();        
                 $.ajax({
-                    url: "http://localhost:8000/ouvidoria?page=0&count=10", // Substitua pelo URL do seu servidor
+                    url: "http://localhost:8000/ouvidoria?page=0&count=10", 
                     type: 'GET',
                     contentType: 'application/json',
                     dataType: "json",
@@ -41,28 +84,49 @@
 </head>
 <body>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card mt-5">
-                    <div class="card-header text-center">
-                        <h3>Ouvidoria</h3>
+    <div class="row justify-content-center">
+    <div class="col-md">
+        <div id="list" class="card mt-5">
+            <div class="card-header text-center">
+                <h3>Ouvidoria</h3>
+            </div>
+            <div class="card-body">
+                <div class="card mt-2 mb-2 p-3">
+                    <h5>Nome Completo</h5>
+                    <h5>Tipo</h5>
+                    <h5>DATA</h5>
+                    <a>
+
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris porttitor feugiat neque, id condimentum ipsum mollis at. Nullam dapibus a nulla non faucibus. Quisque ut elementum magna, vitae aliquam lectus. Mauris eget nulla nec augue pretium malesuada id in lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi commodo ex risus, eget molestie nisi rhoncus quis. Suspendisse potenti. Proin dignissim nibh et nulla ultrices hendrerit. Donec et turpis pulvinar, volutpat nibh id, faucibus risus. Fusce rutrum neque nec congue rhoncus. Cras nec arcu tristique, sollicitudin tellus ut, feugiat mi. Ut ut ligula pretium, tempus eros non, sagittis libero. Duis et tincidunt est.
+                        
+                        Proin eget purus aliquam, ultrices mauris sit amet, imperdiet ex. Maecenas risus purus, sollicitudin ut rutrum et, ultrices rhoncus diam. Nulla ex ante, pharetra sit amet lacus vel, viverra dapibus mauris. Etiam a neque interdum, tincidunt elit nec, tincidunt orci. Pellentesque consectetur tortor ut felis pretium, vitae fermentum est viverra. Pellentesque iaculis, neque quis volutpat venenatis, orci mi efficitur purus, et ultricies quam dolor eu nibh. Sed nec nibh volutpat ex gravida venenatis ut eget enim. Proin vehicula, nulla eget malesuada tincidunt, tortor diam vestibulum neque, vel ornare felis leo et leo. Duis accumsan dolor lectus, ac viverra leo lacinia et. Morbi risus ex, tempor a lorem vel, volutpat vehicula lectus.
+                        
+                        Donec luctus magna id accumsan ullamcorper. In quis tempor lacus. Quisque egestas et diam vel imperdiet. Etiam sagittis, tortor eu sodales fermentum, odio quam placerat ex, sed interdum enim lorem eget lacus. Sed ultricies congue nulla, quis suscipit mi consectetur sed. Pellentesque eu luctus lacus, ac semper lectus. Nullam nisi nisi, mattis feugiat commodo at, dictum non est.
+                        
+                        Duis vestibulum interdum vestibulum. Integer sagittis aliquam quam, pharetra blandit velit tincidunt non. Ut a lorem vestibulum diam ullamcorper condimentum. Mauris et gravida libero. Mauris placerat nulla eget varius auctor. Morbi mattis justo sed augue faucibus, eget tincidunt lacus tincidunt. Donec justo velit, finibus vulputate laoreet eget, euismod at augue. Etiam in felis aliquet justo vehicula pulvinar. Integer id varius enim, non malesuada libero. Nam placerat augue ac scelerisque euismod. Maecenas interdum sagittis diam, faucibus cursus nisi ullamcorper at. Maecenas eu cursus nibh. In a felis euismod, commodo lectus ut, congue ligula.
+                        
+                        Vivamus vehicula augue massa. Nunc dictum convallis pharetra. Duis ullamcorper mollis maximus. Quisque feugiat lectus eget commodo convallis. Pellentesque consectetur id orci iaculis rhoncus. Proin tristique, tortor eget commodo tempus, turpis magna fringilla ex, gravida mollis diam lectus sit amet turpis. Nulla eu orci tortor. Suspendisse ornare venenatis ornare. Phasellus et imperdiet ex, quis pharetra arcu. Aliquam quis elit ut augue viverra molestie.
+                        Generated 5 paragraphs, 432 words, 2949 bytes of Lorem Ipsum
+                    </a>
+                    
+                    <div class="card mt-3 p-2">
+                    <h5 class="mt-2">Anexos:</h5>
+                    <div class="row row-cols-auto mt-2">
+                        <div class="col row mb-3">
+                            <a href="http://www.google.com" target="_blank">
+                                <img src="../assets/file.svg" alt="Bootstrap" width="32" height="32">
+                                <a>
+                                    teste.pdf
+                                </a>
+                            </a>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form id="loginForm">
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="text" class="form-control" id="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Senha:</label>
-                                <input type="password" class="form-control" id="password" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 </body>
 </html>
