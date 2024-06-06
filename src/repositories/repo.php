@@ -1,6 +1,4 @@
 <?php
-require_once("./models.php");
-
 function connectToDatabase(): PDO{
     $servername = "localhost:3306";
     $username = "php";

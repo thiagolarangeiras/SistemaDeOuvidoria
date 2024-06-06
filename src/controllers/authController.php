@@ -1,7 +1,4 @@
 <?php
-require_once("./models.php");
-require_once("./repo.php");
-
 // geito inseguro
 //     $db = connectToDatabase();
 //     $db->beginTransaction();

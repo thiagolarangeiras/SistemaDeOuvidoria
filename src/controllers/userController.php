@@ -1,8 +1,4 @@
 <?php
-require_once("./models.php");
-require_once("./repo.php");
-
-//Repository
 function userRepoSelectAll(int $page = 0, int $count = 50): array{
     $db = connectToDatabase();
     $db->beginTransaction();
