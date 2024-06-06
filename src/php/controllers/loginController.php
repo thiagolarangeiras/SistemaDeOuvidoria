@@ -10,24 +10,23 @@ require_once("./repo.php");
 //     $db->commit();
 //     return $result["senha"];
 
-function loginRepoGetPasswordByEmail(string $email): string {
+function loginRepoGetPasswordByEmail(string $email): array {
     $db = connectToDatabase();
     $db->beginTransaction();
-    $prepare = $db->prepare("SELECT senha FROM usuarios au WHERE au.email = ?;");
+    $prepare = $db->prepare("SELECT id_usuario, senha FROM usuarios au WHERE au.email = ?;");
     $prepare->execute([$email]);
     $result = $prepare->fetch();
     $db->commit();
-    return $result["senha"];
+    return $result;
 }
-function loginRepoGetPasswordByUsuario(string $usuario): string {
+function loginRepoGetPasswordByUsuario(string $usuario): array {
     $db = connectToDatabase();
     $db->beginTransaction();
-    $prepare = $db->prepare("SELECT senha FROM usuarios au WHERE au.usuario = ?");
+    $prepare = $db->prepare("SELECT id_usuario, senha FROM usuarios au WHERE au.usuario = ?;");
     $prepare->execute([$usuario]);
     $result = $prepare->fetch();
     $db->commit();
-    var_dump($result);
-    return $result["senha"];
+    return $result;
 }
 
 function loginController(): Response{ 
@@ -48,13 +47,16 @@ function loginController(): Response{
         else 
             $senhaBanco = loginRepoGetPasswordByUsuario($usuario);
 
-        if(!is_string($senhaBanco))
-            $token = null;
-
-        if(!password_verify($senha, $senhaBanco))
-            $token = null;
         
-        $token = "token-example";
+        if($senhaBanco == null || $senhaBanco < 1)
+            $token = null;
+        else if(!password_verify($senha, $senhaBanco["senha"]))
+            $token = null;
+        else {
+            //session_regenerate_id(true);
+            $_SESSION["userId"] = $senhaBanco["id_usuario"];
+            $token = "token-example";
+        }
     }
 
     if($token == null)

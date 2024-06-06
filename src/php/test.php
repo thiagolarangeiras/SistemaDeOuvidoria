@@ -1,19 +1,24 @@
 <?php
 session_start();
 
-$_SESSION["userId"] = 1;
-$_SESSION["date"] = "";
+var_dump($_SESSION);
+echo "<BR>";
 
-date_default_timezone_set("America/Sao_Paulo");
 
-$awd = date("Y/m/d H:i:s");
-var_dump($awd);
-echo gettype($awd);
 
-if (isset($_SESSION['user_id'])) {
+var_dump($_SESSION);
+echo "<BR>";
+
+//session_destroy();
+
+//$_SESSION['userId'] = '1';
+
+var_dump($_SESSION);
+echo "<BR>";
+
+if (isset($_SESSION['userId'])) {
     echo 'Usuário está autenticado';
 } else {
     echo 'Usuário não está autenticado';
 }
 
-session_destroy();

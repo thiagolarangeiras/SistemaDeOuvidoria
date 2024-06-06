@@ -104,6 +104,11 @@ function ouvidoriaAnexosController(): Response{
         "POST" => "anexoPost",
         "DELETE" => "anexoDelete",
     ];
+    
+    if (!isset($_SESSION['userId'])) { 
+        return new Response(401,[ ]);    
+    }
+
     if(isset($methods[$_SERVER["REQUEST_METHOD"]])){
         //validar se esta logado
         return $methods[$_SERVER["REQUEST_METHOD"]]();

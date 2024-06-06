@@ -19,7 +19,7 @@ class Usuario {
     public $cidade; 
     public $estado;
     public static function mapToUsuarioRetorno(array $usuario): Usuario {
-        return new Usuario(
+        return Usuario::construct(
             $usuario["usuario"],
             "",
             $usuario["nome"],
@@ -33,17 +33,17 @@ class Usuario {
     }
 
     public static function construct($usuario, $senha, $nome, $nascimento, $email, $telefone, $whatsapp, $cidade, $estado): Usuario {
-        $usuario = new Usuario();
-        $$usuario->usuario = $usuario;
-        $$usuario->senha = $senha;
-        $$usuario->nome = $nome;
-        $$usuario->nascimento = $nascimento ;
-        $$usuario->email = $email;
-        $$usuario->telefone = $telefone; 
-        $$usuario->whatsapp = $whatsapp; 
-        $$usuario->cidade = $cidade; 
-        $$usuario->estado = $estado;
-        return $usuario;
+        $novoUsuario = new Usuario();
+        $novoUsuario->usuario = $usuario;
+        $novoUsuario->senha = $senha;
+        $novoUsuario->nome = $nome;
+        $novoUsuario->nascimento = $nascimento ;
+        $novoUsuario->email = $email;
+        $novoUsuario->telefone = $telefone; 
+        $novoUsuario->whatsapp = $whatsapp; 
+        $novoUsuario->cidade = $cidade; 
+        $novoUsuario->estado = $estado;
+        return $novoUsuario;
     }
 }
 

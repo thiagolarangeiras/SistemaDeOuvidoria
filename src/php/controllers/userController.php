@@ -103,7 +103,7 @@ function userControllerPost(): Response {
     //Pegar dados enviados
     {
         $input = json_decode(file_get_contents('php://input'), TRUE);
-        $usuario = new Usuario(
+        $usuario = Usuario::construct(
             $input["usuario"],
             $input["senha"],
             $input["nome"],
@@ -166,8 +166,11 @@ function userController(): Response{
         "PUT" => "userControllerPut",
         "DELETE" => "userControllerDelete",
     ];
-    if(isset($methods[$_SERVER["REQUEST_METHOD"]])){
+    if($_SERVER["REQUEST_METHOD"] != "POST" && !isset($_SESSION['userId']))
+        return new Response(401,[ ]);
+
+    if(isset($methods[$_SERVER["REQUEST_METHOD"]]))
         return $methods[$_SERVER["REQUEST_METHOD"]]();
-    }    
+
     return new Response(400,["error"=> "Metodo não permitido"]);
 }
