@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ouvidoria</title>
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+        crossorigin="anonymous">
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+        crossorigin="anonymous">
+    </script>
+    <script 
+        src="https://code.jquery.com/jquery-3.7.1.min.js" 
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
+        crossorigin="anonymous">    
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#signin").on("click", function() {
+                window.location = "./cadastro.html";
+            });
+            $('#loginForm').on('submit', function(event) {
+                event.preventDefault();
+                var usuario = $('#usuario').val();
+                var senha = $('#senha').val();
+                $.ajax({
+                    url: "http://localhost:8000/php/login",
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: "json",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true // Permite o envio e recebimento de cookies
+                    },
+                    data: JSON.stringify({
+                        usuario: usuario,
+                        senha: senha
+                    }),
+                    success: function(data, textStatus, request) {
+                        console.log(data);
+                        console.log(textStatus);
+                        console.log(request.getAllResponseHeaders());
+                        window.location = "./ouvidoria.html";
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText);
+                        console.error(xhr.responseText);
+                    }
+                });
+
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card mt-5">
+                    <div class="card-header text-center">
+                        <h3>Entrar</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <div class="form-group mb-3">
+                                <label for="usuario">Email/Usuario:</label>
+                                <input type="text" class="form-control" id="usuario" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="senha">Senha:</label>
+                                <input type="senha" class="form-control" id="senha" required>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col">
+                                    <button type="submit" class="col btn btn-primary btn-block">Entrar</button>
+                                </div>
+                                <div class="col d-flex flex-row-reverse">
+                                    <button type="button" id="signin" class="btn btn-primary btn-block">Criar uma conta</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
