@@ -135,6 +135,7 @@ function ouvidoriaController(): Response{
     if (!isset($_SESSION['userId'])) { 
         return new Response(401, [ ]);    
     }
+    
     if(isset($methods[$_SERVER["REQUEST_METHOD"]]))
         return $methods[$_SERVER["REQUEST_METHOD"]]();
     

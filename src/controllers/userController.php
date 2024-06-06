@@ -166,7 +166,7 @@ function userController(): Response{
         "PUT" => "userControllerPut",
         "DELETE" => "userControllerDelete",
     ];
-    if($_SERVER["REQUEST_METHOD"] != "POST" && !isset($_SESSION['userId']))
+    if(!isset($_SESSION['userId']))
         return new Response(401,[ ]);
 
     if(isset($methods[$_SERVER["REQUEST_METHOD"]]))

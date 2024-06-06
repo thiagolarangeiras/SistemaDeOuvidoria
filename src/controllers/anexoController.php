@@ -105,13 +105,11 @@ function ouvidoriaAnexosController(): Response{
         "DELETE" => "anexoDelete",
     ];
     
-    if (!isset($_SESSION['userId'])) { 
+    if (!isset($_SESSION['userId']))
         return new Response(401,[ ]);    
-    }
 
-    if(isset($methods[$_SERVER["REQUEST_METHOD"]])){
-        //validar se esta logado
+    if(isset($methods[$_SERVER["REQUEST_METHOD"]]))
         return $methods[$_SERVER["REQUEST_METHOD"]]();
-    }    
+    
     return new Response(400,["error"=> "Metodo não permitido"]);
 }

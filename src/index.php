@@ -8,9 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 session_start();
 
-require_once("./models.php");
-require_once("./repo.php");
-require_once("./controllers/loginController.php");
+require_once("./models/models.php");
+require_once("./repositories/repo.php");
+require_once("./controllers/authController.php");
 require_once("./controllers/userController.php");
 require_once("./controllers/ouvidoriaController.php");
 require_once("./controllers/anexoController.php");
@@ -27,12 +27,14 @@ error_reporting(E_ALL);
 
 try {    
     $controllers = [
-        "/login" => "loginController",
+        "/login" => "authController",
+        "/signin" => "authController",
         "/user" => "userController",
         "/ouvidoria" => "ouvidoriaController",
         "/ouvidoria/anexos" => "ouvidoriaAnexosController"
     ];
     $response = $controllers[$_SERVER["PATH_INFO"]]();
+    
     http_response_code($response->statusCode);
     header('Content-Type: application/json');    
     echo json_encode($response->data);

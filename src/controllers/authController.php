@@ -29,10 +29,9 @@ function loginRepoGetPasswordByUsuario(string $usuario): array {
     return $result;
 }
 
-function loginController(): Response{ 
+function loginController(): Response {
     if($_SERVER["REQUEST_METHOD"] != "POST")
-        return new Response(400,["error"=> "Metodo não permitido"]);
-
+        return new Response(400,["error"=> "Metodo não permitido"]);    
     //pagar os dados
     {
         $input = json_decode(file_get_contents('php://input'), TRUE); 
@@ -62,4 +61,10 @@ function loginController(): Response{
     if($token == null)
         return new Response(400, ["error" => "Senha ou Usuario incorretos!"]);
     return new Response(200, ["token" => $token]);
+}
+
+function signinController(): Response { 
+    if($_SERVER["REQUEST_METHOD"] != "POST")
+        return new Response(400,["error"=> "Metodo não permitido"]);    
+    return userControllerPost();
 }
