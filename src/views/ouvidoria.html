@@ -23,7 +23,7 @@
             $('#loginForm').on('submit', function(event) {
                 event.preventDefault();        
                 $.ajax({
-                    url: "http://localhost:8000/php/ouvidoria?page=0&count=10", // Substitua pelo URL do seu servidor
+                    url: "http://localhost:8000/ouvidoria?page=0&count=10", // Substitua pelo URL do seu servidor
                     type: 'GET',
                     contentType: 'application/json',
                     dataType: "json",
