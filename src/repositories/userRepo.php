@@ -41,7 +41,6 @@ function userRepoInsert(Usuario $usuarioInsertDto): int{
         $usuarioInsertDto->cidade,
         $usuarioInsertDto->estado
     ]);
-    //$db->rollBack();
     $id = $db->lastInsertId();
     $db->commit();
     return $id;

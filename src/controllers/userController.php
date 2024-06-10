@@ -37,60 +37,50 @@ function userControllerGet(): Response {
     }
     return new Response(200, $users);
 }
+
 function userControllerPost(): Response {
-    //Pegar dados enviados
-    {
-        $input = json_decode(file_get_contents('php://input'), TRUE);
-        $usuario = Usuario::construct(
-            $input["usuario"],
-            $input["senha"],
-            $input["nome"],
-            $input["nascimento"],
-            $input["email"],
-            $input["telefone"],
-            $input["whatsapp"],
-            $input["cidade"],
-            $input["estado"]
-        );
+    $input = json_decode(file_get_contents('php://input'), TRUE);
+    $usuario = Usuario::construct(
+        $input["usuario"],
+        $input["senha"],
+        $input["nome"],
+        $input["nascimento"],
+        $input["email"],
+        $input["telefone"],
+        $input["whatsapp"],
+        $input["cidade"],
+        $input["estado"]
+    );
+
+    $fieldErrors = [];
+    //usuario
+    if(!preg_match("/^\w{10,50}$/", $usuario->usuario)){
+        $fieldErrors["usuario"] = "Nome de usuario invalido!";    
+    } else if(userRepoCheckUser($usuario->usuario)){
+        $fieldErrors["usuario"] = "Nome de usuario já foi utilizado!";
     }
 
-    //Validações
-    //Talvez não seja necessario fazer selects nessa etapa e deixar para dar erro no insert
-    {
-        $fieldErrors = [];
-        //usuario
-        if(!preg_match("/^\w{10,50}$/", $usuario->usuario)){
-            $fieldErrors["usuario"] = "Nome de usuario invalido!";    
-        } else if(userRepoCheckUser($usuario->usuario)){
-            $fieldErrors["usuario"] = "Nome de usuario já foi utilizado!";
-        }
-
-        //senha
-        if(!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/", $usuario->senha)){
-            $fieldErrors["senha"] = "Senha invalido!";
-        }
-        //nome
-        //nascimento
-        //email
-        if(!filter_var($usuario->email, FILTER_VALIDATE_EMAIL)){
-            $fieldErrors["email"] = "email invalido!";    
-        } else if(userRepoCheckEmail($usuario->email)){
-            $fieldErrors["email"] = "email já foi utilizado!";
-        }
-        
-        //telefone
-        //whatsapp
-        //cidade
-        //estado
-        if(count($fieldErrors)>0) 
-            return new Response(400, ["error" => "Erros ao validar os Campos",  "fields" => $fieldErrors]);
+    //senha
+    if(!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/", $usuario->senha)){
+        $fieldErrors["senha"] = "Senha invalido!";
     }
+    //nome
+    //nascimento
+    //email
+    if(!filter_var($usuario->email, FILTER_VALIDATE_EMAIL)){
+        $fieldErrors["email"] = "email invalido!";    
+    } else if(userRepoCheckEmail($usuario->email)){
+        $fieldErrors["email"] = "email já foi utilizado!";
+    }   
+    //telefone
+    //whatsapp
+    //cidade
+    //estado
+    if(count($fieldErrors)>0) 
+        return new Response(400, ["error" => "Erros ao validar os Campos",  "fields" => $fieldErrors]);
 
-    //Salvar no banco de dados
-    {
-        $usuario->senha = password_hash($usuario->senha, PASSWORD_BCRYPT);
-        $id = userRepoInsert($usuario);
-    }
-    
+
+    $usuario->senha = password_hash($usuario->senha, PASSWORD_BCRYPT);
+    $id = userRepoInsert($usuario);
     return new Response(201, ["id" => $id]);
 }
