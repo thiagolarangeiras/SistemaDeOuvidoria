@@ -57,7 +57,7 @@ function ouvidoriaPost(): Response{
         $input = json_decode(file_get_contents('php://input'), TRUE);
         $ouvidoria = new Ouvidoria(
             0,
-            $input["idUsuario"],
+            $_SESSION["userId"],
             $input["descricao"],
             $input["tipoServico"],
             [],
