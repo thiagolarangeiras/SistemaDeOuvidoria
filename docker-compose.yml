@@ -1,0 +1,21 @@
+version: "3"
+
+networks:
+  internal:
+    driver: bridge
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    networks:
+      - internal
+  php:
+    image: php:fpm-alpine
+    networks:
+      - internal
+  
