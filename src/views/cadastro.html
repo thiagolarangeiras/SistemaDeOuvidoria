@@ -19,53 +19,54 @@
         crossorigin="anonymous">    
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#Telefone').mask('(00) 00000-0000');
-            $('#Whatsapp').mask('(00) 00000-0000');
-            $("#login").on("click", function() {
-                window.location = "./views/index.html";
-            });
-            $('#loginForm').on('submit', function(event) { 
-                event.preventDefault();
-                let usuario = $("#Usuario").val();
-                console.log(usuario);
-                let senha = $("#Senha").val();
-                let nome = $("#Nome").val();
-                let nascimento = $("#Nascimento").val();
-                let email = $("#Email").val();
-                let telefone = $("#Telefone").val();
-                let whatsapp = $("#Whatsapp").val();
-                let cidade = $("#Cidade").val();
-                let estado = $("#Estado").val();
+<script>
+$(document).ready(function() {    
+    $("#login").on("click", function() {
+        window.location = "./";
+    });
+    
+    $('#Telefone').mask('(00) 00000-0000');
+    $('#Whatsapp').mask('(00) 00000-0000');
+    $('#loginForm').on('submit', function(event) { 
+        event.preventDefault();
+        let usuario = $("#Usuario").val();
+        console.log(usuario);
+        let senha = $("#Senha").val();
+        let nome = $("#Nome").val();
+        let nascimento = $("#Nascimento").val();
+        let email = $("#Email").val();
+        let telefone = $("#Telefone").val();
+        let whatsapp = $("#Whatsapp").val();
+        let cidade = $("#Cidade").val();
+        let estado = $("#Estado").val();
 
-                $.ajax({
-                    url: "http://localhost:8000/signin",
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        usuario: usuario,
-                        senha: senha,
-                        nome: nome,
-                        nascimento: nascimento,
-                        email: email,
-                        telefone: telefone,
-                        whatsapp: whatsapp,
-                        cidade: cidade,
-                        estado: estado
-                    }),
-                    success: function(response) {
-                        alert("awd");
-                        window.location = "./ouvidoria.html";
-                    },
-                    error: function(xhr, status, error) {
-                        alert(xhr.responseText);
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
+        $.ajax({
+            url: "http://localhost:8000/signin",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                usuario: usuario,
+                senha: senha,
+                nome: nome,
+                nascimento: nascimento,
+                email: email,
+                telefone: telefone,
+                whatsapp: whatsapp,
+                cidade: cidade,
+                estado: estado
+            }),
+            success: function(response) {
+                alert("awd");
+                window.location = "./ouvidoria.html";
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText);
+                console.error(xhr.responseText);
+            }
         });
-    </script>
+    });
+});
+</script>
 </head>
 <body>
     <div class="container">
@@ -119,6 +120,10 @@
                                 </div>
                                 <div class="col d-flex flex-row-reverse">
                                     <button type="button" id="login" class="btn btn-primary btn-block">Já tenho uma conta</button>
+                                </div>
+                                
+                                <div class="col d-flex flex-row-reverse">
+                                    <button type="button" id="2" class="btn btn-primary btn-block">2</button>
                                 </div>
                             </div>
                         </form>

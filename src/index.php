@@ -9,8 +9,12 @@ header("Access-Control-Allow-Methods: *");
 header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Credentials: true");
 
+
+
 if(!isset($_SERVER["PATH_INFO"])){
-    readfile("./views/index.html");
+    // redirecionar para views caso o servidor seja um so
+    echo "<script> window.location = \"./views/\" ;</script>";
+    //readfile("./views/index.html");
     exit();
 }
 

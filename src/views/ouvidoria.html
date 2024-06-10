@@ -18,69 +18,72 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
         crossorigin="anonymous">    
     </script>
-    <script>
-        $(document).ready(function() {
-            console.log();
-            $.ajax({
-                url: "http://localhost:8000/ouvidoria?page=0&count=100",
-                type: 'GET',
-                contentType: 'application/json',
-                dataType: "json",
-                success: function(response) {
-                    response.forEach(element => {
-                        addElement(element);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    
-                    console.error(xhr.responseText);
-                }
+<script>
+$(document).ready(function() {
+    $("#cadastroOuvidoria").on("click", function() {
+        window.location = "./cadastroOuvidoria.html";
+    });
+
+    $.ajax({
+        url: "http://localhost:8000/ouvidoria?page=0&count=100",
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: "json",
+        success: function(response) {
+            response.forEach(element => {
+                addElement(element);
             });
-            function addElement(data){
-                attachments = "";
-                data.anexos.forEach(element => {
-                    attachments += "\n" +
-                        `<div class="col row mb-3">` +
-                            `<a href="${window.location.origin}/ouvidoria/anexos?idAnexo=${element.idAnexo}" target="_blank">` +
-                                `<img src="../assets/file.svg" alt="Bootstrap" width="32" height="32">` +
-                                `<a>${element.nome}</a>` +
-                            `</a>` +
-                        `</div>`;
-                });
-                element =
-                    `<div class="card-body">` +
-                    `<div class="card mt-2 mb-2 p-3">` +
-                        `<h5>${data.nomeUsuario}</h5>` +
-                        `<h5>${data.tipoServico}</h5>` +
-                        `<a>${data.descricao}</a>` +
-                        `<div class="card mt-3 p-2">` +
-                        `<h5 class="mt-2">Anexos:</h5>` +
-                        `<div class="row row-cols-auto mt-2">` +
-                            attachments +        
-                        `</div>` +
-                        `</div>` +
-                    `</div>` +
-                    `</div>`;
-                $('#list').append(element);
-            }
-            $('#loginForm').on('submit', function(event) {
-                event.preventDefault();        
-                $.ajax({
-                    url: "http://localhost:8000/ouvidoria?page=0&count=100", 
-                    type: 'GET',
-                    contentType: 'application/json',
-                    dataType: "json",
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    error: function(xhr, status, error) {
-                        // Erro na resposta
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
+        },
+        error: function(xhr, status, error) {
+            
+            console.error(xhr.responseText);
+        }
+    });
+    function addElement(data){
+        attachments = "";
+        data.anexos.forEach(element => {
+            attachments += "\n" +
+                `<div class="col row mb-3">` +
+                    `<a href="${window.location.origin}/ouvidoria/anexos?idAnexo=${element.idAnexo}" target="_blank">` +
+                        `<img src="../assets/file.svg" alt="Bootstrap" width="32" height="32">` +
+                        `<a>${element.nome}</a>` +
+                    `</a>` +
+                `</div>`;
         });
-    </script>
+        element =
+            `<div class="card-body">` +
+            `<div class="card mt-2 mb-2 p-3">` +
+                `<h5>${data.nomeUsuario}</h5>` +
+                `<h5>${data.tipoServico}</h5>` +
+                `<a>${data.descricao}</a>` +
+                `<div class="card mt-3 p-2">` +
+                `<h5 class="mt-2">Anexos:</h5>` +
+                `<div class="row row-cols-auto mt-2">` +
+                    attachments +        
+                `</div>` +
+                `</div>` +
+            `</div>` +
+            `</div>`;
+        $('#list').append(element);
+    }
+    $('#loginForm').on('submit', function(event) {
+        event.preventDefault();        
+        $.ajax({
+            url: "http://localhost:8000/ouvidoria?page=0&count=100", 
+            type: 'GET',
+            contentType: 'application/json',
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                // Erro na resposta
+                console.error(xhr.responseText);
+            }
+        });
+    });
+});
+</script>
 </head>
 <body>
     <div class="container">
@@ -89,8 +92,11 @@
         <div id="list" class="card mt-5">
             <div class="card-header text-center">
                 <h3>Ouvidoria</h3>
+                <div class="col d-flex flex-row-reverse">
+                    <button type="button" id="cadastroOuvidoria" class="btn btn-primary btn-block">Novo</button>
+                </div>
             </div>
-            <div class="card-body">
+            <!-- <div class="card-body">
                 <div class="card mt-2 mb-2 p-3">
                     <h5>Nome Completo</h5>
                     <h5>Tipo</h5>
@@ -123,7 +129,7 @@
                     </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     </div>
