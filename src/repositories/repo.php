@@ -1,6 +1,6 @@
 <?php
 function connectToDatabase(): PDO{
-    $servername = "localhost:3306";
+    $servername = "host.docker.internal:3306";
     $username = "php";
     $password = "php";
     try {
