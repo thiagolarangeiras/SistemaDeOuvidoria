@@ -1,5 +1,4 @@
 <?php
-
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -9,9 +8,7 @@ header("Access-Control-Allow-Methods: *");
 header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Credentials: true");
 
-var_dump($_SERVER);
-
-if(!isset($_SERVER["PATH_INFO"])){
+if(!isset($_SERVER["PATH_INFO"]) || $_SERVER["PATH_INFO"] == ""){
     // redirecionar para views caso o servidor seja um so
     echo "<script> window.location = \"./views/\" ;</script>";
     //readfile("./views/index.html");
@@ -21,7 +18,6 @@ if(!isset($_SERVER["PATH_INFO"])){
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
-
 
 try {    
     session_start();

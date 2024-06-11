@@ -17,9 +17,10 @@ docker build --no-cache -t u12_core -f u12_core .
 docker build --no-cache -t teste3 .
 
 docker run -d -p 8000:80 --name teste3 teste3
+docker run -d -p 8000:80 teste3
 ```
 
-# e
+# util
 ```sh
 service nginx status #checa se esta rodando
 nginx #roda
