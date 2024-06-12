@@ -32,3 +32,16 @@ service", "",
   docker exec -it teste3 bash
 
 /usr/sbin/php-fpm8.2
+
+
+## Referencias
+
+https://medium.com/@maravondra/mysql-in-docker-d7bb1e304473  
+https://hub.docker.com/_/mysql  
+https://hub.docker.com/r/mysql/mysql-server  
+
+# Configurando o PHP com PDO
+
+https://www.php.net/manual/en/pdo.installation.php  
+
+criar um arquivo php.ini na pasta local do php

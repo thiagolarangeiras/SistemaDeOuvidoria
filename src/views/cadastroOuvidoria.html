@@ -29,7 +29,7 @@ $(document).ready(function() {
         var formData = new FormData();
         formData.append('file', file);
         $.ajax({
-            url: `http://localhost:8000/ouvidoria/anexos?idOuvidoria=${idOuvidoria}`,
+            url: `${window.location.origin}/ouvidoria/anexos?idOuvidoria=${idOuvidoria}`,
             type: 'POST',
             contentType: false,
             processData: false,
@@ -40,7 +40,6 @@ $(document).ready(function() {
                 
             },
             error: function(xhr, status, error) {
-                
                 console.error(xhr.responseText);
             }
         });
@@ -66,7 +65,7 @@ $(document).ready(function() {
         let descricao = $('#descricao').val();
         let tipo = $('#tipo').val();
         $.ajax({
-            url: "http://localhost:8000/ouvidoria",
+            url: `${window.location.origin}/ouvidoria`,
             type: 'POST',
             contentType: 'application/json',
             dataType: "json",

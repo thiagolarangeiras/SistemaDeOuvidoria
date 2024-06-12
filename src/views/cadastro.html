@@ -41,7 +41,7 @@ $(document).ready(function() {
         let estado = $("#Estado").val();
 
         $.ajax({
-            url: "http://localhost:8000/signin",
+            url: `${window.location.origin}/signin`,
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -56,11 +56,9 @@ $(document).ready(function() {
                 estado: estado
             }),
             success: function(response) {
-                alert("awd");
                 window.location = "./ouvidoria.html";
             },
             error: function(xhr, status, error) {
-                alert(xhr.responseText);
                 console.error(xhr.responseText);
             }
         });

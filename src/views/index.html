@@ -28,7 +28,7 @@ $(document).ready(function() {
         var usuario = $('#usuario').val();
         var senha = $('#senha').val();
         $.ajax({
-            url: "http://localhost:8000/login",
+            url: `${window.location.origin}/login`,
             type: 'POST',
             contentType: 'application/json',
             dataType: "json",
