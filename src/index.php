@@ -52,5 +52,6 @@ try {
 } catch (Throwable $th) {
     http_response_code(500);
     header('Content-Type: application/json');
-    echo json_encode(["error" => $th->__toString()]);
+    echo "";
+    //echo json_encode(["error" => $th->__toString()]);
 }
