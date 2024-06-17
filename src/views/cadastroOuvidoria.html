@@ -19,74 +19,6 @@
         crossorigin="anonymous">    
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-<script>
-$(document).ready(function() {
-    const files = {};
-    $('#file').val(null); 
-    $('#descricao').val(null);
-    $('#tipo').val(null);
-    function sendFile(idOuvidoria, file){
-        var formData = new FormData();
-        formData.append('file', file);
-        $.ajax({
-            url: `${window.location.origin}/ouvidoria/anexos?idOuvidoria=${idOuvidoria}`,
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            crossDomain: true,
-            xhrFields: { withCredentials: true },
-            data: formData,
-            success: function(response) {
-                
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    }
-    
-    $("#login").on("click", function() {
-        window.location = "./ouvidoria.html";
-    });
-
-    $("#file").change(function (e) {
-        const file = e.target.files[0]; 
-        files[file.name] = file;
-        const element = $(`<div id="${file.name}" class="files form-group">${file.name}</div>`);
-        $('#files-list').append(element);
-        element.on("click", function() {
-            delete files[file.name];
-            $(this).remove();
-        });
-    });
-
-    $('#loginForm').on('submit', function(event) { 
-        event.preventDefault();
-        let descricao = $('#descricao').val();
-        let tipo = $('#tipo').val();
-        $.ajax({
-            url: `${window.location.origin}/ouvidoria`,
-            type: 'POST',
-            contentType: 'application/json',
-            dataType: "json",
-            crossDomain: true,
-            xhrFields: { withCredentials: true },
-            data: JSON.stringify({
-                descricao: descricao,
-                tipoServico: tipo 
-            }),
-            success: function(data) {
-                for (const [key, value] of Object.entries(files)) {
-                    sendFile(data.idOuvidoria, value);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    });
-});
-</script>
 </head>
 <body>
     <div class="container">
@@ -126,4 +58,78 @@ $(document).ready(function() {
         </div>
     </div>
 </body>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: `${window.location.origin}/ouvidoria?page=0&count=1`,
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: "json",
+        success: function(response) { },
+        error: function(response) {            
+            window.location = "./";
+        }
+    });
+
+    const files = {};
+    $('#file').val(null); 
+    $('#descricao').val(null);
+    $('#tipo').val(null);
+
+    function sendFile(idOuvidoria, file){
+        var formData = new FormData();
+        formData.append('file', file);
+        $.ajax({
+            url: `${window.location.origin}/ouvidoria/anexos?idOuvidoria=${idOuvidoria}`,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            crossDomain: true,
+            xhrFields: { withCredentials: true },
+            data: formData,
+            success: function(response) { },
+            error: function(response) { }
+        });
+    }
+    
+    $("#login").on("click", function() {
+        window.location = "./ouvidoria.html";
+    });
+
+    $("#file").change(function (e) {
+        const file = e.target.files[0]; 
+        files[file.name] = file;
+        const element = $(`<div id="${file.name}" class="files form-group">${file.name}</div>`);
+        $('#files-list').append(element);
+        element.on("click", function() {
+            delete files[file.name];
+            $(this).remove();
+        });
+    });
+
+    $('#loginForm').on('submit', function(event) { 
+        event.preventDefault();
+        let descricao = $('#descricao').val();
+        let tipo = $('#tipo').val();
+        $.ajax({
+            url: `${window.location.origin}/ouvidoria`,
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: "json",
+            crossDomain: true,
+            xhrFields: { withCredentials: true },
+            data: JSON.stringify({
+                descricao: descricao,
+                tipoServico: tipo 
+            }),
+            success: function(data) {
+                for (const [key, value] of Object.entries(files)) {
+                    sendFile(data.idOuvidoria, value);
+                }
+            },
+            error: function(response) { }
+        });
+    });
+});
+</script>
 </html>

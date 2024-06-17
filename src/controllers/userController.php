@@ -62,10 +62,17 @@ function userControllerPost(): Response {
 
     //senha
     if(!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/", $usuario->senha)){
-        $fieldErrors["senha"] = "Senha invalido!";
+        $fieldErrors["senha"] = "Senha invalida!";
     }
     //nome
     //nascimento
+    $data = explode("/", $usuario->nascimento);
+    if(!checkdate($data[0], $data[1], $data[3])){
+        $fieldErrors["nascimento"] = "Data invalida!";
+    }
+
+    $nascimento = date_create_from_format("d/m/Y", $usuario->nascimento);
+    $usuario->nascimento = date_format($nascimento,"Y-m-d");
     //email
     if(!filter_var($usuario->email, FILTER_VALIDATE_EMAIL)){
         $fieldErrors["email"] = "email invalido!";    
@@ -73,7 +80,11 @@ function userControllerPost(): Response {
         $fieldErrors["email"] = "email já foi utilizado!";
     }   
     //telefone
+    if(strlen($usuario->telefone) != 15)
+        $fieldErrors["telefone"] = "Telefone invalido!";
     //whatsapp
+    if(strlen($usuario->telefone) != 15)
+        $fieldErrors["whatsapp"] = "whatsapp invalido!";
     //cidade
     //estado
     if(count($fieldErrors)>0) 

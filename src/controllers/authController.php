@@ -1,7 +1,7 @@
 <?php
 function loginController(): Response {
     if($_SERVER["REQUEST_METHOD"] != "POST")
-        return new Response(400,["error"=> "Metodo não permitido"]);    
+        return new Response(405,["error"=> "Metodo não permitido"]);    
     //pagar os dados
     {
         $input = json_decode(file_get_contents('php://input'), TRUE); 
@@ -17,7 +17,7 @@ function loginController(): Response {
             $senhaBanco = loginRepoGetPasswordByUsuario($usuario);
 
         
-        if($senhaBanco == null || $senhaBanco < 1)
+        if($senhaBanco == null || !$senhaBanco)
             $token = null;
         else if(!password_verify($senha, $senhaBanco["senha"]))
             $token = null;

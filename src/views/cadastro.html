@@ -19,26 +19,97 @@
         crossorigin="anonymous">    
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card mt-5">
+                    <div class="card-header text-center">
+                        <h3>Cadastro</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <div class="form-group mb-3">
+                                <label for="usuario">Usuario:</label>
+                                <input type="text" class="form-control" id="usuario" required>
+                                <div class="text-danger" id="usuario-error"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="senha">Senha:</label>
+                                <input type="password" class="form-control" id="senha" required>
+                                <div class="text-danger" id="senha-error"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="nome">Nome:</label>
+                                <input type="text" class="form-control" id="nome" required>
+                                <div class="text-danger" id="nome-error"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="nascimento">Data de nascimento:</label>
+                                <input type="text" class="form-control" id="nascimento" required>
+                                <div class="text-danger" id="nascimento-error"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email">Email:</label>
+                                <input type="text" class="form-control" id="email" required>
+                                <div class="text-danger" id="email-error"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="telefone">Telefone:</label>
+                                <input type="text" class="form-control" id="telefone" required>
+                                <div class="text-danger" id="telefone-error"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="whatsapp">Whatsapp:</label>
+                                <input type="text" class="form-control" id="whatsapp" required>
+                                <div class="text-danger" id="whatsapp-error"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="cidade">Cidade:</label>
+                                <input type="text" class="form-control" id="cidade" required>
+                                <div class="text-danger" id="cidade-error"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="estado">Estado:</label>
+                                <input type="text" class="form-control" id="estado" required>
+                                <div class="text-danger" id="estado-error"></div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col">
+                                    <button type="submit" class="col btn btn-primary btn-block">Cadastrar</button>
+                                </div>
+                                <div class="col d-flex flex-row-reverse">
+                                    <button type="button" id="login" class="btn btn-primary btn-block">Já tenho uma conta</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 <script>
 $(document).ready(function() {    
     $("#login").on("click", function() {
         window.location = "./";
     });
-    
-    $('#Telefone').mask('(00) 00000-0000');
-    $('#Whatsapp').mask('(00) 00000-0000');
+
+    $('#nascimento').mask('00/00/0000');
+    $('#telefone').mask('(00) 00000-0000');
+    $('#whatsapp').mask('(00) 00000-0000');
     $('#loginForm').on('submit', function(event) { 
         event.preventDefault();
-        let usuario = $("#Usuario").val();
-        console.log(usuario);
-        let senha = $("#Senha").val();
-        let nome = $("#Nome").val();
-        let nascimento = $("#Nascimento").val();
-        let email = $("#Email").val();
-        let telefone = $("#Telefone").val();
-        let whatsapp = $("#Whatsapp").val();
-        let cidade = $("#Cidade").val();
-        let estado = $("#Estado").val();
+        let usuario = $("#usuario").val();
+        let senha = $("#senha").val();
+        let nome = $("#nome").val();
+        let nascimento = $("#nascimento").val();
+        let email = $("#email").val();
+        let telefone = $("#telefone").val();
+        let whatsapp = $("#whatsapp").val();
+        let cidade = $("#cidade").val();
+        let estado = $("#estado").val();
 
         $.ajax({
             url: `${window.location.origin}/signin`,
@@ -58,77 +129,20 @@ $(document).ready(function() {
             success: function(response) {
                 window.location = "./ouvidoria.html";
             },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+            error: function(response) {
+                if(response.status != 400)
+                    return;
+                
+                for (const [key, value] of Object.entries(response.responseJSON.fields)) {
+                    let a = `#${key}-error`;
+                    console.log(a);
+                    console.log(value);
+                    $(a).text(value);
+                }
+                
             }
         });
     });
 });
 </script>
-</head>
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card mt-5">
-                    <div class="card-header text-center">
-                        <h3>Cadastro</h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="loginForm">
-                            <div class="form-group mb-3">
-                                <label for="Usuario">Usuario:</label>
-                                <input type="text" class="form-control" id="Usuario" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Senha">Senha:</label>
-                                <input type="password" class="form-control" id="Senha" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Nome">Nome:</label>
-                                <input type="text" class="form-control" id="Nome" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Nascimento">Nascimento:</label>
-                                <input type="text" class="form-control" id="Nascimento" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Email">Email:</label>
-                                <input type="text" class="form-control" id="Email" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Telefone">Telefone:</label>
-                                <input type="text" class="form-control" id="Telefone" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Whatsapp">Whatsapp:</label>
-                                <input type="text" class="form-control" id="Whatsapp" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Cidade">Cidade:</label>
-                                <input type="text" class="form-control" id="Cidade" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Estado">Estado:</label>
-                                <input type="text" class="form-control" id="Estado" required>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col">
-                                    <button type="submit" class="col btn btn-primary btn-block">Cadastrar</button>
-                                </div>
-                                <div class="col d-flex flex-row-reverse">
-                                    <button type="button" id="login" class="btn btn-primary btn-block">Já tenho uma conta</button>
-                                </div>
-                                
-                                <div class="col d-flex flex-row-reverse">
-                                    <button type="button" id="2" class="btn btn-primary btn-block">2</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
 </html>

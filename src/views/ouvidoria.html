@@ -18,72 +18,6 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
         crossorigin="anonymous">    
     </script>
-<script>
-$(document).ready(function() {
-    $("#cadastroOuvidoria").on("click", function() {
-        window.location = "./cadastroOuvidoria.html";
-    });
-
-    $.ajax({
-        url: `${window.location.origin}/ouvidoria?page=0&count=100`,
-        type: 'GET',
-        contentType: 'application/json',
-        dataType: "json",
-        success: function(response) {
-            response.forEach(element => {
-                addElement(element);
-            });
-        },
-        error: function(xhr, status, error) {
-            
-            console.error(xhr.responseText);
-        }
-    });
-    function addElement(data){
-        attachments = "";
-        data.anexos.forEach(element => {
-            attachments += "\n" +
-                `<div class="col row mb-3">` +
-                    `<a href="${window.location.origin}/ouvidoria/anexos?idAnexo=${element.idAnexo}" target="_blank">` +
-                        `<img src="../assets/file.svg" alt="Bootstrap" width="32" height="32">` +
-                        `<a>${element.nome}</a>` +
-                    `</a>` +
-                `</div>`;
-        });
-        element =
-            `<div class="card-body">` +
-            `<div class="card mt-2 mb-2 p-3">` +
-                `<h5>${data.nomeUsuario}</h5>` +
-                `<h5>${data.tipoServico}</h5>` +
-                `<a>${data.descricao}</a>` +
-                `<div class="card mt-3 p-2">` +
-                `<h5 class="mt-2">Anexos:</h5>` +
-                `<div class="row row-cols-auto mt-2">` +
-                    attachments +        
-                `</div>` +
-                `</div>` +
-            `</div>` +
-            `</div>`;
-        $('#list').append(element);
-    }
-    $('#loginForm').on('submit', function(event) {
-        event.preventDefault();        
-        $.ajax({
-            url: `${window.location.origin}/ouvidoria?page=0&count=100`, 
-            type: 'GET',
-            contentType: 'application/json',
-            dataType: "json",
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(xhr, status, error) {
-                // Erro na resposta
-                console.error(xhr.responseText);
-            }
-        });
-    });
-});
-</script>
 </head>
 <body>
     <div class="container">
@@ -135,4 +69,71 @@ $(document).ready(function() {
     </div>
     </div>
 </body>
+<script>
+$(document).ready(function() {
+    $("#cadastroOuvidoria").on("click", function() {
+        window.location = "./cadastroOuvidoria.html";
+    });
+    $.ajax({
+        url: `${window.location.origin}/ouvidoria?page=0&count=100`,
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: "json",
+        success: function(response) {
+            response.forEach(element => {
+                addElement(element);
+            });
+        },
+        error: function(response) {
+            console.error(response.responseText);
+            if(response.status == 500){
+                alert("Erro no servidor. Tente Novamente mais tarde!");
+                return;
+            } 
+            
+            if(response.status == 405){
+                return;
+            }
+
+            if(response.status == 401){
+                console.log("a");
+                document.cookie = "PHPSESSID=; expires=01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location = "./";
+                return;
+            }
+
+            if(response.status == 400){
+                alert(response.responseJSON.error);
+            }
+        }
+    });
+    function addElement(data){
+        attachments = "";
+        data.anexos.forEach(element => {
+            attachments += "\n" +
+                `<div class="col row mb-3">` +
+                    `<a href="${window.location.origin}/ouvidoria/anexos?idAnexo=${element.idAnexo}" target="_blank">` +
+                        `<img src="../assets/file.svg" alt="Bootstrap" width="32" height="32">` +
+                        `<a>${element.nome}</a>` +
+                    `</a>` +
+                `</div>`;
+        });
+        element =
+            `<div class="card-body">` +
+            `<div class="card mt-2 mb-2 p-3">` +
+                `<h5>${data.nomeUsuario}</h5>` +
+                `<h5>${data.tipoServico}</h5>` +
+                `<a>${data.descricao}</a>` +
+                `<div class="card mt-3 p-2">` +
+                `<h5 class="mt-2">Anexos:</h5>` +
+                `<div class="row row-cols-auto mt-2">` +
+                    attachments +        
+                `</div>` +
+                `</div>` +
+            `</div>` +
+            `</div>`;
+        $('#list').append(element);
+    }
+});
+</script>
 </html>

@@ -18,8 +18,62 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
         crossorigin="anonymous">    
     </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card mt-5">
+                    <div class="card-header text-center">
+                        <h3>Entrar</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <div class="form-group mb-3">
+                                <label for="usuario">Email/Usuario:</label>
+                                <input type="text" class="form-control" id="usuario" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="senha">Senha:</label>
+                                <input type="password" class="form-control" id="senha" required>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col">
+                                    <button type="submit" class="col btn btn-primary btn-block">Entrar</button>
+                                </div>
+                                <div class="col d-flex flex-row-reverse">
+                                    <button type="button" id="signin" class="btn btn-primary btn-block">Criar uma conta</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 <script>
 $(document).ready(function() {
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    if(getCookie("PHPSESSID") != ""){
+        window.location = "./ouvidoria.html";
+    }
+    
     $("#signin").on("click", function() {
         window.location = "./cadastro.html";
     });
@@ -41,47 +95,23 @@ $(document).ready(function() {
             success: function(data, textStatus, request) {
                 window.location = "./ouvidoria.html";
             },
-            error: function(xhr, status, error) {
-                alert(xhr.responseText);
-                console.error(xhr.responseText);
+            error: function(response) {
+                if(response.status == 500){
+                    alert("Erro no servidor. Tente Novamente mais tarde!");
+                    return;
+                } 
+                
+                if(response.status == 405){
+                    return;
+                }
+
+                if(response.status == 400){
+                    alert(response.responseJSON.error);
+                }
             }
         });
 
     });
 });
 </script>
-</head>
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card mt-5">
-                    <div class="card-header text-center">
-                        <h3>Entrar</h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="loginForm">
-                            <div class="form-group mb-3">
-                                <label for="usuario">Email/Usuario:</label>
-                                <input type="text" class="form-control" id="usuario" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="senha">Senha:</label>
-                                <input type="senha" class="form-control" id="senha" required>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col">
-                                    <button type="submit" class="col btn btn-primary btn-block">Entrar</button>
-                                </div>
-                                <div class="col d-flex flex-row-reverse">
-                                    <button type="button" id="signin" class="btn btn-primary btn-block">Criar uma conta</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
 </html>
