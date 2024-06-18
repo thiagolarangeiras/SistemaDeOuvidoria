@@ -20,6 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 try {    
+    if($_SERVER["PATH_INFO"] == "/email"){
+        $to = 'thiago.larangeira50@gmail.com';
+
+        $subject = 'Hello';
+
+        $message = 'This is a test email.';
+        if(mail($to, $subject, $message)) {
+            echo "Email enviado com sucesso.";
+        } else {
+            echo "Falha ao enviar o email.";
+        }
+
+    }
+
+
     session_start();
     require_once("./models/anexo.php");
     require_once("./models/ouvidoria.php");
