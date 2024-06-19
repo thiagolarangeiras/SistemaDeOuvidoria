@@ -40,7 +40,7 @@ function signinController(): Response {
 }
 
 function emailController(): Response{    
-    if($_SERVER["REQUEST_METHOD"] != "POST")
+    if($_SERVER["REQUEST_METHOD"] != "GET")
         return new Response(405,["error"=> "Metodo não permitido"]);
 
     $userId = (int) $_REQUEST["userId"];
@@ -49,7 +49,7 @@ function emailController(): Response{
         $tokenPassword = getenv("PHP_EMAIL_TOKEN_PASSWORD") ?? throw new ErrorException();
         $tokenPassword = $tokenPassword . $userId;
         if( 
-            password_verify($token, password_hash($tokenPassword, PASSWORD_BCRYPT)) &&
+            password_verify($tokenPassword, $token) &&
             userRepoValidate($userId)
         ){
             return new Response(200,["message"=> "Email validado"]);   

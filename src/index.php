@@ -8,6 +8,13 @@ header("Access-Control-Allow-Methods: *");
 header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Credentials: true");
 
+
+// $a = '$2y$10$vw9JScF6IFdBxima7amDiu2.tdyaeAZmKh0pWIdjVNSA4PXptFfv6';
+// $b = 'ouvidoriaValidacaoEmailzE957-6V.ofhm(<58';
+// var_dump(password_verify($b, $a));
+// exit();
+
+
 if(!isset($_SERVER["PATH_INFO"]) || $_SERVER["PATH_INFO"] == ""){
     // redirecionar para views caso o servidor seja um so
     echo "<script> window.location = \"./views/\" ;</script>";

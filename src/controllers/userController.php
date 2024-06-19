@@ -94,7 +94,7 @@ function userControllerPost(): Response {
     $usuario->senha = password_hash($usuario->senha, PASSWORD_BCRYPT);
     $id = userRepoInsert($usuario);
     if($id > 0){
-        sendValidationEmail($id);
+        sendValidationEmail($id, $usuario->email);
     }
     return new Response(201, ["id" => $id]);
 }
@@ -106,7 +106,7 @@ function sendValidationEmail(int $userId, string $userEmail): bool{
     
     $tokenPassword = $tokenPassword . $userId;
     $token = password_hash($tokenPassword, PASSWORD_BCRYPT);
-    $link = $_SERVER["HTTP_HOST"] . "/emailController?userId=$userId&token=$token";
+    $link = $_SERVER["HTTP_HOST"] . "/email?userId=$userId&token=$token";
     
     $data = [
         "from"=> [
