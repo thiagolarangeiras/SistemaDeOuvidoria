@@ -10,7 +10,7 @@
 function loginRepoGetPasswordByEmail(string $email): array|bool {
     $db = connectToDatabase();
     $db->beginTransaction();
-    $prepare = $db->prepare("SELECT id_usuario, senha FROM usuarios au WHERE au.email = ?;");
+    $prepare = $db->prepare("SELECT id_usuario, senha FROM usuarios au WHERE au.email = ? AND au.validado = TRUE;");
     $prepare->execute([$email]);
     $result = $prepare->fetch(PDO::FETCH_ASSOC);
     $db->commit();
@@ -19,7 +19,7 @@ function loginRepoGetPasswordByEmail(string $email): array|bool {
 function loginRepoGetPasswordByUsuario(string $usuario): array|bool {
     $db = connectToDatabase();
     $db->beginTransaction();
-    $prepare = $db->prepare("SELECT id_usuario, senha FROM usuarios au WHERE au.usuario = ?;");
+    $prepare = $db->prepare("SELECT id_usuario, senha FROM usuarios au WHERE au.usuario = ? AND au.validado = TRUE;");
     $prepare->execute([$usuario]);
     $result = $prepare->fetch(PDO::FETCH_ASSOC);
     $db->commit();

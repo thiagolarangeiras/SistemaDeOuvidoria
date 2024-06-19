@@ -44,9 +44,10 @@ function emailController(): Response{
         return new Response(405,["error"=> "Metodo não permitido"]);
 
     $userId = (int) $_REQUEST["userId"];
-    $token = (int) $_REQUEST["token"];
+    $token = $_REQUEST["token"];
     if(isset($userId) && $userId > 0 && isset($token)){
-        $tokenPassword = "ouvidoriaValidacaoEmailzE957-6V.ofhm(<$userId";
+        $tokenPassword = getenv("PHP_EMAIL_TOKEN_PASSWORD") ?? throw new ErrorException();
+        $tokenPassword = $tokenPassword . $userId;
         if( 
             password_verify($token, password_hash($tokenPassword, PASSWORD_BCRYPT)) &&
             userRepoValidate($userId)
