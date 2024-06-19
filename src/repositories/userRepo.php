@@ -28,7 +28,7 @@ function userRepoSelectOne(int $idUsuario): array{
 function userRepoInsert(Usuario $usuarioInsertDto): int{
     $db = connectToDatabase();
     $db->beginTransaction();
-    $prepare = $db->prepare("INSERT INTO usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $prepare = $db->prepare("INSERT INTO usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE)");
     $prepare->execute([
         0, // id_usuario
         $usuarioInsertDto->usuario,
@@ -68,4 +68,14 @@ function userRepoCheckUser(string $usuario): bool{
     if(is_array($result))
         return true;
     return false;
+}
+
+function userRepoValidate(int $userId): bool{
+    $db = connectToDatabase();
+    $db->beginTransaction();
+    $prepare = $db->prepare("UPDATE usuarios SET validado = TRUE WHERE id_usuario = :id;");
+    $prepare->bindParam(':id', $userId, PDO::PARAM_INT);
+    $result = $prepare->execute();
+    $db->commit();
+    return $result;
 }

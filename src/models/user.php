@@ -1,14 +1,15 @@
 <?php
 class Usuario {
-    public $usuario;
-    public $senha;
-    public $nome;
-    public $nascimento;
-    public $email;
-    public $telefone; 
-    public $whatsapp; 
-    public $cidade; 
-    public $estado;
+    public string $usuario;
+    public string $senha;
+    public string $nome;
+    public string $nascimento;
+    public string $email;
+    public string $telefone; 
+    public string $whatsapp; 
+    public string $cidade; 
+    public string $estado;
+    public bool $validado;
     public static function mapToUsuarioRetorno(array $usuario): Usuario {
         return Usuario::construct(
             $usuario["usuario"],
@@ -34,6 +35,7 @@ class Usuario {
         $novoUsuario->whatsapp = $whatsapp; 
         $novoUsuario->cidade = $cidade; 
         $novoUsuario->estado = $estado;
+        $novoUsuario->validado = false;
         return $novoUsuario;
     }
 }

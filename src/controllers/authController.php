@@ -38,3 +38,21 @@ function signinController(): Response {
         return new Response(400,["error"=> "Metodo não permitido"]);    
     return userControllerPost();
 }
+
+function emailController(): Response{    
+    if($_SERVER["REQUEST_METHOD"] != "POST")
+        return new Response(405,["error"=> "Metodo não permitido"]);
+
+    $userId = (int) $_REQUEST["userId"];
+    $token = (int) $_REQUEST["token"];
+    if(isset($userId) && $userId > 0 && isset($token)){
+        $tokenPassword = "ouvidoriaValidacaoEmailzE957-6V.ofhm(<$userId";
+        if( 
+            password_verify($token, password_hash($tokenPassword, PASSWORD_BCRYPT)) &&
+            userRepoValidate($userId)
+        ){
+            return new Response(200,["message"=> "Email validado"]);   
+        }
+    }
+    return new Response(500,["error"=> "Erro ao validar email"]);
+}

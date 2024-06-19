@@ -9,7 +9,8 @@ RUN add-apt-repository ppa:ondrej/php
 RUN apt install -y php8.2 php8.2-fpm
 RUN apt install -y php8.2-mysql
 RUN apt install -y nginx
-RUN apt install -y sendmail
+#RUN apt install -y sendmail
+RUN apt install -y php8.2-curl
 
 #COPY default.conf /etc/nginx/conf.d
 COPY nginx/default.single.conf /etc/nginx/sites-available/default

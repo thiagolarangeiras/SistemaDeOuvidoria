@@ -67,7 +67,7 @@ function userControllerPost(): Response {
     //nome
     //nascimento
     $data = explode("/", $usuario->nascimento);
-    if(!checkdate($data[0], $data[1], $data[3])){
+    if(!checkdate($data[1], $data[0], $data[2])){
         $fieldErrors["nascimento"] = "Data invalida!";
     }
 
@@ -92,6 +92,85 @@ function userControllerPost(): Response {
 
 
     $usuario->senha = password_hash($usuario->senha, PASSWORD_BCRYPT);
-    $id = userRepoInsert($usuario);
+    $id = 1;//userRepoInsert($usuario);
+    if($id > 0){
+        sendValidationEmail($id);
+    }
     return new Response(201, ["id" => $id]);
+}
+
+
+function sendValidationEmail(int $userId): bool{    
+    $tokenPassword = "";
+    $token = password_hash($tokenPassword, PASSWORD_BCRYPT);
+    $link = "url?userId=$userId&token=$token";
+    
+    $data = [
+        "from"=> [
+            "email"=> ""
+        ],
+        "to"=> [
+            [
+                "email"=> "thiago.larangeira50@gmail.com"
+            ]
+        ],
+        "subject"=> "Verifique seu email da ouvidoria",
+        "text"=> "Use o link a seguir para verificar o seu email.\n$link",
+        "html"=> "Use o link a seguir para verificar o seu email.\n$link"
+    ];
+    $headers = [
+        "Content-Type: application/json",
+        "Authorization: Bearer "
+    ];
+
+    $ch = curl_init("https://api.mailersend.com/v1/email");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    $response = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        echo 'Erro: ' . curl_error($ch);
+        $result = false;
+    } else {
+        echo 'Resposta: ' . $response;
+        $result = true;
+    }
+    curl_close($ch);
+    return $result;
+}
+
+function sendValidationEmail1(int $userId): bool{
+    $tokenPassword = "";
+    $token = password_hash($tokenPassword, PASSWORD_BCRYPT);
+    $link = "url?userId=$userId&token=$token";
+
+    $body = [
+        "from"=> [
+            "email"=> ""
+        ],
+        "to"=> [
+            [
+                "email"=> "thiago.larangeira50@gmail.com"
+            ]
+        ],
+        "subject"=> "Verifique seu email da ouvidoria",
+        "text"=> "Use o link a seguir para verificar o seu email.\n$link",
+        "html"=> "Use o link a seguir para verificar o seu email.\n$link"
+    ];
+    $context = stream_context_create([
+        "http"=>[
+            "method"=> "POST",
+            "header"=> 
+                "Content-Type: application/json\r\n". 
+                "Authorization: Bearer \r\n",
+            "content" => json_encode($body)
+        ]
+    ]);
+
+    $requestResult = file_get_contents("https://api.mailersend.com/v1/email", false, $context);
+    var_dump($requestResult);
+    var_dump(error_get_last());
+    return true;
 }

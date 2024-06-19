@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS usuarios(
     telefone VARCHAR(15) NULL,
     whatsapp VARCHAR(15) NULL,
     cidade VARCHAR(50) NOT NULL,
-    estado VARCHAR(50) NOT NULL
+    estado VARCHAR(50) NOT NULL,
+    validado BOOL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS ouvidorias(
