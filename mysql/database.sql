@@ -1,5 +1,5 @@
--- CREATE DATABASE ouvidoria;
--- USE ouvidoria;
+CREATE DATABASE ouvidoria;
+USE ouvidoria;
 
 DROP TABLE IF EXISTS anexos;
 DROP TABLE IF EXISTS ouvidorias;

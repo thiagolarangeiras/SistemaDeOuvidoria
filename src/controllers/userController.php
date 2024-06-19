@@ -55,7 +55,7 @@ function userControllerPost(): Response {
     $fieldErrors = [];
     //usuario
     if(!preg_match("/^\w{10,50}$/", $usuario->usuario)){
-        $fieldErrors["usuario"] = "Nome de usuario invalido!";    
+        $fieldErrors["usuario"] = "Nome de usuario invalido! 10 letras no minimo";    
     } else if(userRepoCheckUser($usuario->usuario)){
         $fieldErrors["usuario"] = "Nome de usuario já foi utilizado!";
     }
